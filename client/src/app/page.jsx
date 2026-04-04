@@ -1,11 +1,21 @@
-import { redirect } from "next/navigation";
+"use client";
+
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { getToken } from "@/lib/auth";
 
 export default function Home() {
-  const isLoggedIn = true; // baad me auth se replace karega
+  const router = useRouter();
 
-  if (isLoggedIn) {
-    redirect("/dashboard");
+useEffect(() => {
+  const token = getToken();
+
+  if (token) {
+    router.push("/dashboard");
   } else {
-    redirect("/login");
+    router.push("/login");
   }
+}, [router]); 
+
+  return <p className="text-center mt-10">Loading...</p>;
 }
