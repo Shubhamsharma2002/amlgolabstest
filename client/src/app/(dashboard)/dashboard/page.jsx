@@ -1,7 +1,8 @@
 import SummaryCard from "@/components/dashboard/SummaryCards";
 import SpendingChart from "@/components/dashboard/SpendingChart";
 import CategoryPie from "@/components/dashboard/CategoryPie";
-import AISuggestion from "@/components/dashboard/AISuggestion";
+import AISuggestion from "@/components/ui/AISuggestion";
+
 
 export default function DashboardPage() {
   return (
