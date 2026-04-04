@@ -1,26 +1,32 @@
 import express from "express";
-import cors from'cors';
+import cors from "cors";
+import cookieParser from "cookie-parser";
+import errorHandler from "./src/middleware/errorMiddleware.js";
+import authRoutes from './src/routes/user.routes.js';
+
 
 
 const server = express();
+
+// middleware
 server.use(cors({
-    origin:process.env.CORS_ORIGIN,
-    Credential:true
+  origin: process.env.CORS_ORIGIN,
+  credentials: true   // ✅ fixed
 }));
-server.use(
-    express.urlencoded({ extended: true })
-);
+
 server.use(express.json());
+server.use(express.urlencoded({ extended: true }));
+server.use(cookieParser());
 
+// routes
+server.use("/api/v1/auth", authRoutes);
 
-
-
-
-server.get('/', (req, res) => {
-    return res.send("Server is fired successfully :---:)");
+// test route
+server.get("/", (req, res) => {
+  res.send("Server is running 🚀");
 });
 
+// ❗❗❗ ERROR MIDDLEWARE (ALWAYS LAST)
+server.use(errorHandler);
 
-
-
-export  {server};
+export { server };
