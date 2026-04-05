@@ -50,8 +50,8 @@ export const getBudgetAlerts = async (req, res, next) => {
             const percentage = (spent / b.amount) * 100;
 
             let status = "Under Control";
-            if (percentage >= 100) status = "Limit Exceeded!"; // 
-            else if (percentage >= 80) status = "Warning: 80% Reached"; // 
+            if (percentage >= 100) status = "Limit Exceeded!"; 
+            else if (percentage >= 80) status = "Warning: 80% Reached"; 
 
             return {
                 category: b.category,

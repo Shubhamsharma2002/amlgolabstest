@@ -2,7 +2,7 @@ import { Expense } from "../models/expense.model.js";
 import ApiError from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 
-// 1. Create Expense [cite: 13]
+// 1. Create Expense 
 export const addExpense = async (req, res, next) => {
     try {
         const { amount, category, paymentMethod, date, notes } = req.body;
@@ -17,7 +17,7 @@ export const addExpense = async (req, res, next) => {
             paymentMethod,
             date: date || Date.now(),
             notes,
-            owner: req.user._id // verifyJWT middleware se mil raha hai
+            owner: req.user._id 
         });
 
         return res.status(201).json(new ApiResponse(201, expense, "Expense added successfully"));
@@ -26,10 +26,10 @@ export const addExpense = async (req, res, next) => {
     }
 };
 
-// 2. Get All Expenses with Filters & Search [cite: 19, 21]
+// 2. Get All Expenses with Filters & Search 
 export const getExpenses = async (req, res, next) => {
     try {
-        const { category, paymentMethod, date, search } = req.query; // 'date' query parameter se
+        const { category, paymentMethod, date, search } = req.query; 
         
         let query = { owner: req.user._id }; 
 

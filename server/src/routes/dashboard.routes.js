@@ -3,7 +3,7 @@ import verifyJWT from "../middleware/auth.middleware.js";
 import { getDashboardData } from "../controllers/dashboard.controller.js";
 
 const router = Router();
-router.use(verifyJWT); // Sirf login user dekh sake [cite: 11]
+router.use(verifyJWT); // Sirf login user dekh sake 
 
 router.route("/stats").get(getDashboardData);
 

@@ -9,17 +9,17 @@ import {
 
 const router = Router();
 
-// Saare expense routes ke liye login zaroori hai [cite: 11]
+// Saare expense routes ke liye login zaroori hai 
 router.use(verifyJWT); 
 
 // Route: /api/v1/expenses/
 router.route("/")
-    .post(addExpense)   // Add new expense [cite: 13, 14]
-    .get(getExpenses);  // Get all with filters/search [cite: 19, 21]
+    .post(addExpense)   // Add new expense 
+    .get(getExpenses);  // Get all with filters/search 
 
 // Route: /api/v1/expenses/:id
 router.route("/:id")
-    .patch(updateExpense)  // Edit expense [cite: 14]
-    .delete(deleteExpense); // Delete expense [cite: 14]
+    .patch(updateExpense)  // Edit expense 
+    .delete(deleteExpense); // Delete expense 
 
 export default router;

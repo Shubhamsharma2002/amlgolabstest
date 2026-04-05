@@ -28,19 +28,19 @@ const userSchema = new Schema(
   { timestamps: true }
 );
 
-// 🔐 Hash password
+//  Hash password
 userSchema.pre("save", async function () {
   if (!this.isModified("password")) return;
 
   this.password = await bcrypt.hash(this.password, 10);
 });
 
-// 🔑 Compare password
+//  Compare password
 userSchema.methods.isPasswordCorrect = async function (password) {
   return await bcrypt.compare(password, this.password);
 };
 
-// 🔥 Access Token
+//  Access Token
 userSchema.methods.generateAccessToken = function () {
   return jwt.sign(
     {
@@ -55,7 +55,7 @@ userSchema.methods.generateAccessToken = function () {
   );
 };
 
-// 🔥 Refresh Token
+//  Refresh Token
 userSchema.methods.generateRefreshToken = function () {
   return jwt.sign(
     {

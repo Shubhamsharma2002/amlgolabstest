@@ -7,7 +7,7 @@ export const getDashboardData = async (req, res, next) => {
         const now = new Date();
         const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
 
-        // Sabhi requirements ke liye aggregation [cite: 25, 26]
+        // Sabhi requirements ke liye aggregation
         const stats = await Expense.aggregate([
             {
                 $match: {
@@ -41,8 +41,8 @@ export const getDashboardData = async (req, res, next) => {
             totalSpent, // Requirement 1 
             topCategory, // Requirement 2 
             topPayments: data.paymentMethods, // Requirement 3 
-            categoryStats: data.totalAndCategory, // Requirement 4 (Pie) [cite: 30]
-            timeStats: data.timeSeries // Requirement 5 (Line) [cite: 31]
+            categoryStats: data.totalAndCategory, // Requirement 4 
+            timeStats: data.timeSeries // Requirement 
         }, "Dashboard data fetched"));
     } catch (error) {
         next(error);

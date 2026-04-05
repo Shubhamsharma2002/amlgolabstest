@@ -9,7 +9,7 @@ console.log("Route registerUser:", registerUser);
 router.route("/register").post(registerUser);
 router.route("/login").post(loginUser);
 
-// 🔒 protected route
+//  protected route
 router.route("/logout").post(verifyJWT, logoutUser);
 
 export default router;

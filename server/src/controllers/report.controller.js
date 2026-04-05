@@ -50,7 +50,7 @@ export const generateAndSaveReport = async (req, res) => {
     }
 };
 
-// 📜 Past 3 Months Reports (Point 45)
+//  Past 3 Months Reports
 export { getPastReports };
 const getPastReports = async (req, res) => {
     const reports = await MonthlyReport.findAll({

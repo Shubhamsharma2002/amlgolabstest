@@ -3,7 +3,7 @@ import { User } from "../models/user.model.js";
 import ApiError from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 
-// ✅ Register
+//  Register
 const registerUser = async (req, res, next) => {
   try {
     const { fullname, email, password } = req.body;
@@ -39,7 +39,7 @@ const registerUser = async (req, res, next) => {
 
 console.log(typeof registerUser);
 
-// ✅ Login
+//  Login
 const loginUser = async (req, res, next) => {
   try {
     const { email, password } = req.body;
@@ -60,7 +60,7 @@ const loginUser = async (req, res, next) => {
       throw new ApiError(401, "Invalid credentials");
     }
 
-    // 🔥 generate tokens
+    //  generate tokens
     const accessToken = user.generateAccessToken();
     const refreshToken = user.generateRefreshToken();
 
@@ -96,7 +96,7 @@ const loginUser = async (req, res, next) => {
 
 
 
-// ✅ Logout
+//  Logout
 const logoutUser = async (req, res, next) => {
   try {
     await User.findByIdAndUpdate(
