@@ -49,35 +49,40 @@ export const getDashboardData = async (req, res, next) => {
     }
 };
 
+// server/src/controllers/dashboard.controller.js
+
 export const getSmartSuggestions = async (req, res) => {
     try {
         const userId = req.user._id;
-
-        // 1. Database se user ke real expenses nikalo
-        // Hum pichle 30-40 din ka data bhej sakte hain analysis ke liye
         const userExpenses = await Expense.find({ owner: userId }).sort({ date: -1 });
 
-        // Agar koi kharcha nahi mila toh Python ko bhejne ki zaroorat hi nahi
         if (!userExpenses || userExpenses.length === 0) {
             return res.status(200).json({ 
                 success: true, 
-                suggestions: ["Bhai, pehle kuch kharche toh add karo tabhi toh suggest karunga!"] 
+                suggestions: ["Abhi koi data nahi hai analysis ke liye."] 
             });
         }
 
-        // 2. Real data Python API ko bhejo
-        const response = await axios.post(process.env.PYTHON_API_URL, {
+        // FIX: URL ke saath endpoint attach karo
+        const pythonEndpoint = `${process.env.PYTHON_API_URL}/api/analyze`;
+
+        const response = await axios.post(pythonEndpoint, {
             expenses: userExpenses 
         });
 
-        // 3. Python se aaye suggestions frontend ko bhej do
-        res.json(response.data);
+        // Consistent response format (ApiResponse use karo agar frontend expect kar raha hai)
+        return res.status(200).json({
+            success: true,
+            suggestions: response.data.suggestions || []
+        });
 
     } catch (error) {
-        console.error("AI Error:", error.message);
+        // Detailed logging taaki pata chale EXACTLY kya fail hua
+        console.error("AI ERROR DETAILS:", error.response?.data || error.message);
+        
         res.status(500).json({ 
             success: false, 
-            error: "AI Coach offline hai", 
+            error: "AI Coach connection failed", 
             details: error.message 
         });
     }
