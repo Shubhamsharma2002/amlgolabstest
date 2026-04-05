@@ -4,27 +4,58 @@ import ApiError from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 
 //  Register
+// const registerUser = async (req, res, next) => {
+//   try {
+//     const { fullname, email, password } = req.body;
+
+//     // validation
+//     if (!fullname || !email || !password) {
+//       throw new ApiError(400, "All fields are required");
+//     }
+
+//     // check existing user
+//     const existedUser = await User.findOne({ email });
+
+//     if (existedUser) {
+//       throw new ApiError(400, "User already exists");
+//     }
+
+//     // create user
+//     const user = await User.create({
+//       fullname,
+//       email,
+//       password,
+//     });
+
+//     const createdUser = await User.findById(user._id).select("-password -refreshToken");
+
+//     return res
+//       .status(201)
+//       .json(new ApiResponse(201, createdUser, "User registered successfully"));
+//   } catch (error) {
+//     next(error);
+//   }
+// };
 const registerUser = async (req, res, next) => {
   try {
-    const { fullname, email, password } = req.body;
+    // 1. Yahan 'role' ko bhi extract karo
+    const { fullname, email, password, role } = req.body; 
 
-    // validation
     if (!fullname || !email || !password) {
       throw new ApiError(400, "All fields are required");
     }
 
-    // check existing user
     const existedUser = await User.findOne({ email });
-
     if (existedUser) {
       throw new ApiError(400, "User already exists");
     }
 
-    // create user
+    // 2. User create karte waqt 'role' pass karo
     const user = await User.create({
       fullname,
       email,
       password,
+      role: role || "user", // Agar role nahi bheja toh default 'user'
     });
 
     const createdUser = await User.findById(user._id).select("-password -refreshToken");
@@ -36,7 +67,6 @@ const registerUser = async (req, res, next) => {
     next(error);
   }
 };
-
 console.log(typeof registerUser);
 
 //  Login
