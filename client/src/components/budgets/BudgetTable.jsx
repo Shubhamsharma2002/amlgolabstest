@@ -16,7 +16,7 @@ export default function BudgetTable({ budgets }) {
 <tbody>
   {budgets.map((item, index) => (
     <BudgetRow 
-      key={item.category + index}  // 🔥 FIX
+      key={item.category + index}  
       item={item} 
     />
   ))}

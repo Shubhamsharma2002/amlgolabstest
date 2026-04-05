@@ -14,12 +14,12 @@ export default function useBudget() {
 
     const payload = {
       category: data.category,
-      amount: data.amount, // 🔥 FIXED
+      amount: data.amount,
       month: now.getMonth() + 1,
       year: now.getFullYear(),
     };
 
-    console.log("Sending:", payload); // 🔥 debug
+    console.log("Sending:", payload); 
 
     await apiRequest("/budgets/set", "POST", payload);
 

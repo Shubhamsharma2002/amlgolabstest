@@ -28,7 +28,7 @@ const handleSubmit = (e) => {
     return;
   }
 
-  signup(form); // 🔥 call
+  signup(form); 
 };
 
   return (
@@ -78,7 +78,7 @@ const handleSubmit = (e) => {
           onChange={handleChange}
         />
 
-        {/* 🔹 Button with loading */}
+        {/*  Button with loading */}
         <button
           type="submit"
           disabled={loading}

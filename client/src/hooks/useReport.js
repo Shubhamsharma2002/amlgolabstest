@@ -24,7 +24,7 @@ export default function useReport() {
     try {
       setLoading(true);
       const response = await apiRequest("/reports/generate", "POST");
-      // Report generate hone ke baad history refresh kar do
+      // Report generate hone ke baad history refresh hoga
       await fetchHistory(); 
       return { success: true, data: response.data };
     } catch (err) {

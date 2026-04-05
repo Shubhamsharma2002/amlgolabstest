@@ -13,7 +13,7 @@ export default function Sidebar() {
   ];
 
   return (
-    <div className="h-full flex flex-col bg-white shadow-md p-4"> {/* 🔥 FIX */}
+    <div className="h-full flex flex-col bg-white shadow-md p-4"> 
 
       {/* Logo */}
       <h1 className="text-xl font-bold mb-6">💰 Finance</h1>

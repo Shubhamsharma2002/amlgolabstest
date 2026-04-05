@@ -1,7 +1,7 @@
 "use client";
 import { useEffect } from "react";
 import useReport from "@/hooks/useReport";
-import useDashboard from "@/hooks/useDashboard"; // MongoDB Stats ke liye
+import useDashboard from "@/hooks/useDashboard"; 
 import { StatCard } from "@/components/reports/ReportCard";
 import { ReportsTable } from "@/components/reports/ReportsTable";
 
@@ -16,13 +16,13 @@ export default function ReportsPage() {
   const handleSync = async () => {
     const result = await generateReport();
     if (result.success) {
-      alert("Bhai, SQL data sync ho gaya! ✅");
+      alert("Wow, SQL data is synced  ✅");
     } else {
-      alert("Sync fail ho gaya: " + result.message);
+      alert("Oops,Sync failed: " + result.message);
     }
   };
 
-  if (loading || statsLoading) return <div className="p-20 text-center font-bold">Data fetch ho raha hai...</div>;
+  if (loading || statsLoading) return <div className="p-20 text-center font-bold">Data is fetching...</div>;
 
   return (
     <div className="p-8 space-y-8 bg-gray-50 min-h-screen">

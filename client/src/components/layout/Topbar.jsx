@@ -11,8 +11,8 @@ export default function Topbar() {
   const firstName = user?.fullname?.split(" ")[0];
 
   const handleLogout = async () => {
-    await logoutApi(); // optional
-    logoutUser(); // 🔥 main kaam
+    await logoutApi(); 
+    logoutUser(); 
 
     router.push("/login");
   };

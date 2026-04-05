@@ -2,7 +2,7 @@ export default function BudgetRow({ item }) {
   return (
     <tr className="border-t">
       <td className="p-3 font-medium">
-        {item.category || "N/A"} {/* 🔥 FIX */}
+        {item.category || "N/A"} 
       </td>
 
       <td>₹{item.limit}</td>

@@ -29,7 +29,7 @@ export default function BudgetModal({ form, handleChange, onSave, onClose }) {
       return;
     }
 
-    onSave(); // Parent component (BudgetPage) ka function call hoga
+    onSave(); 
   };
 
   return (
@@ -39,7 +39,7 @@ export default function BudgetModal({ form, handleChange, onSave, onClose }) {
     >
       <div
         className="bg-white p-8 rounded-3xl w-full max-w-md shadow-2xl animate-in zoom-in-95 duration-200"
-        onClick={(e) => e.stopPropagation()} // Modal ke andar click karne par band na ho
+        onClick={(e) => e.stopPropagation()} 
       >
         {/* Header Section */}
         <div className="text-center mb-8">

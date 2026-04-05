@@ -5,7 +5,7 @@ import { Area, AreaChart, ResponsiveContainer, Tooltip, XAxis, YAxis, CartesianG
 export default function SpendingChart({ data = [] }) {
   // Backend data mapping (keep same)
   const chartData = data.map(item => ({
-    date: item._id, // Format: YYYY-MM-DD
+    date: item._id,
     amount: item.amount
   }));
 
@@ -16,18 +16,18 @@ export default function SpendingChart({ data = [] }) {
       <h3 className="mb-5 font-bold text-gray-800 text-lg tracking-tight">Spending Trend</h3>
       
       <ResponsiveContainer width="100%" height={280}>
-        {/* 🔥 YAHAN FIX HAI: LineChart ki jagah AreaChart use kiya */}
+    
         <AreaChart data={chartData} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
           
-          {/* 🔥 GRADIENT SHADOW DEFINE: Ye SVG define karega shadow kaisa dikhega */}
+          
           <defs>
             <linearGradient id="colorAmount" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="5%" stopColor="#6C63FF" stopOpacity={0.4}/> {/* Top colorful */}
-              <stop offset="95%" stopColor="#6C63FF" stopOpacity={0}/> {/* Bottom fades to transparent */}
+              <stop offset="5%" stopColor="#6C63FF" stopOpacity={0.4}/> 
+              <stop offset="95%" stopColor="#6C63FF" stopOpacity={0}/> 
             </linearGradient>
           </defs>
           
-          {/* Halki horizontal lines */}
+         
           <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#F3F4F6" />
           
           <XAxis 
@@ -39,7 +39,7 @@ export default function SpendingChart({ data = [] }) {
             tick={{ fontSize: 12, fill: '#6B7280' }}
             axisLine={false}
             tickLine={false}
-            interval={0} // Har date dikhaye
+            interval={0} 
           />
           
           <YAxis 
@@ -58,15 +58,15 @@ export default function SpendingChart({ data = [] }) {
             formatter={(value) => [`₹${value.toLocaleString()}`, "Spent"]}
           />
           
-          {/* 🔥 AREA: Ye graph line aur shadow ko draw karega */}
+          
           <Area 
-            type="monotone" // Smooth curve
+            type="monotone" 
             dataKey="amount" 
-            stroke="#6C63FF" // Line color
+            stroke="#6C63FF" 
             strokeWidth={3} 
-            fillOpacity={1} // Important: defs wale gradient ko use karega
-            fill="url(#colorAmount)" // gradient id reference ki
-            dot={{ r: 6, strokeWidth: 3, fill: 'white', stroke: '#6C63FF' }} // White dots
+            fillOpacity={1} 
+            fill="url(#colorAmount)" 
+            dot={{ r: 6, strokeWidth: 3, fill: 'white', stroke: '#6C63FF' }} 
             activeDot={{ r: 8 }} 
           />
           

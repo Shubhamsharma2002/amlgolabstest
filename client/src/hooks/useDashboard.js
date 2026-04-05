@@ -9,7 +9,7 @@ export default function useDashboard() {
   const fetchStats = useCallback(async () => {
     try {
       setLoading(true);
-      // 🔥 Endpoint correct kiya: /dashboard/stats
+      // Endpoint correct kiya: /dashboard/stats
       const response = await apiRequest("/dashboard/stats", "GET");
       setStats(response.data); // Backend ApiResponse structure handle kiya
     } catch (err) {

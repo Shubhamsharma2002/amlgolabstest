@@ -8,7 +8,7 @@ import useDashboard from "@/hooks/useDashboard";
 export default function DashboardPage() {
   const { stats, loading } = useDashboard();
 
-  if (loading) return <div className="p-10 text-center font-bold text-purple-600">Bhai, data aa raha hai... 🚀</div>;
+  if (loading) return <div className="p-10 text-center font-bold text-purple-600">Wait, data is loading... 🚀</div>;
 
   return (
     <div className="p-6 space-y-6 bg-[#F5F7FB] min-h-screen">

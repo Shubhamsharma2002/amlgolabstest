@@ -13,13 +13,13 @@ const login = async (data) => {
 
     const res = await apiRequest("/auth/login", "POST", data);
 
-    // 🔥 correct data path
+  
     const user = res.data.user;
     const token = res.data.accessToken;
 
     setToken(token);
 
-    // 🔥 normalize name
+   
     setUser({
       ...user,
       name: user.fullname,
@@ -39,7 +39,7 @@ const signup = async (data) => {
     setLoading(true);
 
     const payload = {
-      fullname: data.name, // 🔥 important mapping
+      fullname: data.name, 
       email: data.email,
       password: data.password,
     };

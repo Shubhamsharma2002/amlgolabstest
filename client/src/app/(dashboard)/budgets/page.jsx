@@ -13,7 +13,7 @@ export default function BudgetPage() {
   const [form, setForm] = useState({ category: "", limit: "" });
 
   useEffect(() => {
-    fetchBudgets(); // 🔥 API call
+    fetchBudgets(); 
   }, []);
 
   const handleChange = (e) => {
@@ -25,7 +25,7 @@ export default function BudgetPage() {
 
   const payload = {
     category: form.category.trim(),
-    amount: Number(form.limit), // 🔥 correct key
+    amount: Number(form.limit), 
     month: now.getMonth() + 1,
     year: now.getFullYear(),
   };

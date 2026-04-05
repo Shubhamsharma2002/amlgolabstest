@@ -24,14 +24,12 @@ export default function CategoryPie({ data = [] }) {
             cx="50%" 
             cy="50%" 
             innerRadius={0} 
-            outerRadius={80} // Radius thoda kam kiya taaki label ko jagah mile
+            outerRadius={80} 
             stroke="white" 
             strokeWidth={2}
-            
-            // 🔥 LABEL FIX: Value ko bahar aur bold dikhane ke liye
             label={({ cx, cy, midAngle, innerRadius, outerRadius, value, index }) => {
               const RADIAN = Math.PI / 180;
-              const radius = outerRadius + 25; // 25px bahar push kiya
+              const radius = outerRadius + 25; 
               const x = cx + radius * Math.cos(-midAngle * RADIAN);
               const y = cy + radius * Math.sin(-midAngle * RADIAN);
 
@@ -39,16 +37,16 @@ export default function CategoryPie({ data = [] }) {
                 <text 
                   x={x} 
                   y={y} 
-                  fill={COLORS[index % COLORS.length]} // Same segment color
+                  fill={COLORS[index % COLORS.length]} 
                   textAnchor={x > cx ? 'start' : 'end'} 
                   dominantBaseline="central"
-                  className="text-xs font-bold" // Tailwind class for bold
+                  className="text-xs font-bold" 
                 >
                   ₹{value}
                 </text>
               );
             }}
-            labelLine={true} // Line on rakho taaki pata chale kis segment ki value hai
+            labelLine={true} 
           >
             {pieData.map((entry, index) => (
               <Cell key={index} fill={COLORS[index % COLORS.length]} />

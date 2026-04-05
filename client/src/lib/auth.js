@@ -1,4 +1,4 @@
-// 🔐 TOKEN
+//  TOKEN
 export const setToken = (token) => {
   if (typeof window === "undefined") return;
   localStorage.setItem("token", token);
@@ -14,11 +14,11 @@ export const removeToken = () => {
   localStorage.removeItem("token");
 };
 
-// 👤 USER
+//  USER
 export const setUser = (user) => {
   if (typeof window === "undefined") return;
 
-  if (!user) return; // 🔥 prevent undefined save
+  if (!user) return; 
 
   localStorage.setItem("user", JSON.stringify(user));
 };
@@ -28,7 +28,7 @@ export const getUser = () => {
 
   const user = localStorage.getItem("user");
 
-  // 🔥 safety checks
+  //  safety checks
   if (!user || user === "undefined" || user === "null") {
     return null;
   }

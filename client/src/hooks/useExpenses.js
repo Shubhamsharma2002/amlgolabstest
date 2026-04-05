@@ -6,7 +6,7 @@ export default function useExpense() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  // 1. 📥 FETCH ALL (With Backend Filters)
+  // 1. FETCH ALL (With Backend Filters)
   const fetchExpenses = useCallback(async (filters = {}) => {
     try {
       setLoading(true);
@@ -31,7 +31,7 @@ export default function useExpense() {
     }
   }, []);
 
-  // 2. 💾 ADD NEW EXPENSE
+  // 2.  ADD NEW EXPENSE
   const addExpense = async (formData) => {
     try {
       setLoading(true);
@@ -45,7 +45,7 @@ export default function useExpense() {
     }
   };
 
-  // 3. ✏️ UPDATE EXPENSE
+  // 3.  UPDATE EXPENSE
   const updateExpense = async (id, formData) => {
     try {
       setLoading(true);
@@ -58,13 +58,13 @@ export default function useExpense() {
     }
   };
 
-  // 4. 🗑️ DELETE EXPENSE
+  // 4.  DELETE EXPENSE
   const deleteExpense = async (id) => {
     try {
       setLoading(true);
       await apiRequest(`/expenses/${id}`, "DELETE");
       
-      // UI refresh (Bina fetch call ke local state se hatao)
+      
       setExpenses((prev) => prev.filter((item) => item._id !== id));
       return { success: true };
     } catch (err) {

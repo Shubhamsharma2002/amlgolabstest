@@ -7,7 +7,7 @@ import { ExpenseModal } from "@/components/expenses/ExpenseModal";
 import { ExpenseTable } from "@/components/expenses/ExpenseTable";
 
 export default function ExpensesPage() {
-  // 1. 🚀 CUSTOM HOOK STATES
+  // 1.  CUSTOM HOOK STATES
   const { 
     expenses, 
     loading, 
@@ -17,12 +17,12 @@ export default function ExpensesPage() {
     deleteExpense 
   } = useExpense();
 
-  // 2. 🏠 UI STATES
+  // 2.  UI STATES
   const [showModal, setShowModal] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const [editId, setEditId] = useState(null);
 
-  // 3. 📝 FORM STATE
+  // 3.  FORM STATE
   const [form, setForm] = useState({
     amount: "",
     category: "",
@@ -31,15 +31,15 @@ export default function ExpensesPage() {
     notes: "",
   });
 
-  // 4. 🔍 FILTER STATES
+  // 4.  FILTER STATES
   const [search, setSearch] = useState("");
   const [filterCategory, setFilterCategory] = useState("");
   const [filterPayment, setFilterPayment] = useState("");
   const [filterDate, setFilterDate] = useState("");
 
-  // --- 📥 API CALLING LOGIC ---
+  // ---  API CALLING LOGIC ---
 
-  // Jab bhi filters badle, backend se fresh data aaye
+  // Jab bhi filters badlega, backend se fresh data aayega
   useEffect(() => {
     fetchExpenses({ 
       search, 
@@ -49,7 +49,7 @@ export default function ExpensesPage() {
     });
   }, [search, filterCategory, filterPayment, filterDate, fetchExpenses]);
 
-  // --- 🕹️ HANDLERS ---
+  // ---  HANDLERS ---
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -59,7 +59,7 @@ export default function ExpensesPage() {
     // Validation
     if (!form.amount || !form.category || !form.date || !form.paymentMethod) {
       console.log("Missing fields in form:", form);
-      alert("Bhai, saari fields bharna zaroori hai! ❗");
+      alert("Listen, All fields are required! ❗");
       
       return;
     }
@@ -90,7 +90,7 @@ export default function ExpensesPage() {
 const handleEditClick = (id) => {
   const selected = expenses.find((item) => item._id === id); 
   
-  // 🔥 Safety Check: Agar 'selected' nahi mila toh function yahi rok do
+  //  Safety Check: Agar 'selected' nahi mila toh function yahi rok do
   if (!selected) {
     console.error("Bhai, expense nahi mila ID se:", id);
     return;
@@ -116,7 +116,7 @@ const handleEditClick = (id) => {
       <div className="flex justify-between items-center">
         <div>
           <h1 className="text-3xl font-black text-gray-900 tracking-tight uppercase">Expenses</h1>
-          <p className="text-gray-500 text-sm font-medium italic">Track every penny, Noida style! 💰</p>
+          <p className="text-gray-500 text-sm font-medium italic">Track Your All, Expenses 💰</p>
         </div>
         <button 
           onClick={() => { 
@@ -143,7 +143,7 @@ const handleEditClick = (id) => {
       {loading ? (
         <div className="flex flex-col items-center justify-center py-20">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mb-4"></div>
-          <p className="text-gray-500 font-bold italic">Bhai, data aa raha hai... tension mat lo!</p>
+          <p className="text-gray-500 font-bold italic">Wait data is loading !</p>
         </div>
       ) : (
         <ExpenseTable 
@@ -156,7 +156,7 @@ const handleEditClick = (id) => {
       {/* NO DATA STATE */}
       {!loading && expenses.length === 0 && (
         <div className="text-center py-20 bg-white rounded-2xl border-2 border-dashed border-gray-100">
-           <p className="text-gray-400 font-medium">Bhai, list khali hai! Naya kharcha add karo ya filter check karo. 🔍</p>
+           <p className="text-gray-400 font-medium">list is empaty add new data or check the filter🔍</p>
         </div>
       )}
 

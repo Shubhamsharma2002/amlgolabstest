@@ -10,7 +10,7 @@ export default function AISuggestion({ suggestions = [] }) {
       {suggestions.length > 0 ? (
         suggestions.map((s, i) => <li key={i} className="flex gap-2"><span>•</span> {s}</li>)
       ) : (
-        <li className=" text-indigo-100 italic">Bhai, abhi data analyze ho raha hai...</li>
+        <li className=" text-indigo-100 italic">Wait, data analyze ho raha hai...</li>
       )}
     </ul>
   </div>

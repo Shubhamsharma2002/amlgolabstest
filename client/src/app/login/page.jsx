@@ -21,7 +21,7 @@ export default function LoginPage() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    login(form); // 🔥 API call via hook
+    login(form); 
   };
 
   return (
