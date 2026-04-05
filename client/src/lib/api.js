@@ -13,7 +13,7 @@ export const apiRequest = async (endpoint, method, body) => {
   });
 
   if (!res.ok) {
-    throw new Error("Something went wrong");
+    throw new Error(data.message || "Something went wrong");
   }
 
   return res.json();

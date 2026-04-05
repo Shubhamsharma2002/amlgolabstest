@@ -44,7 +44,7 @@ const signup = async (data) => {
       password: data.password,
     };
 
-    await apiRequest("/auth/register", "POST", payload);
+    await apiRequest("/auth/register ", "POST", payload);
 
     alert("Signup successful 🎉");
     router.push("/login");
