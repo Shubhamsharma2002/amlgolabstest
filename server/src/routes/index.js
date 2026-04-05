@@ -1,11 +1,12 @@
-const express = require('express');
-const router = express.Router();
 
-const authRoutes = require('./auth');
-const expenseRoutes = require('./expenses');
-const budgetRoutes = require('./budgets');
-const dashboardRoutes = require('./dashboard');
-const reportRoutes = require('./reports');
+import express from "express"
+const router = express.Router();
+import authRoutes from "./user.routes.js"
+import expenseRoutes from "./expense.routes.js"
+import budgetRoutes from "./budget.routes.js"
+import dashboardRoutes from "./dashboard.routes.js"
+import reportRoutes from "./report.routes.js"
+
 
 
 router.use('/auth', authRoutes);
@@ -14,4 +15,4 @@ router.use('/budgets', budgetRoutes);
 router.use('/dashboard', dashboardRoutes);
 router.use('/reports', reportRoutes);
 
-module.exports = router;
+export default router;

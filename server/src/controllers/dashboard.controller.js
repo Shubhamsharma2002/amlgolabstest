@@ -1,6 +1,6 @@
 import { Expense } from "../models/expense.model.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
-
+import axios from "axios"
 export const getDashboardData = async (req, res, next) => {
     try {
         const userId = req.user._id;
@@ -46,5 +46,16 @@ export const getDashboardData = async (req, res, next) => {
         }, "Dashboard data fetched"));
     } catch (error) {
         next(error);
+    }
+};
+
+export const getSmartSuggestions = async (req, res) => {
+    try {
+        const response = await axios.post(process.env.PYTHON_API_URL, {
+            expenses: [] // Aapka data
+        });
+        res.json(response.data);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
     }
 };
