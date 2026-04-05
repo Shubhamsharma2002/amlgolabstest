@@ -8,7 +8,7 @@ import useDashboard from "@/hooks/useDashboard";
 
 export default function DashboardPage() {
   const { stats, loading } = useDashboard();
-  const { suggestions, loading: aiLoading } = useAnalysis();
+const { suggestions, loading: aiLoading } = useAnalysis(stats?.categoryStats);
   if (loading) return <div className="p-10 text-center font-bold text-purple-600">Wait, data is loading... 🚀</div>;
 
   return (
@@ -36,7 +36,7 @@ export default function DashboardPage() {
         <CategoryPie data={stats?.categoryStats} />
       </div>
 
-      <AISuggestion suggestions={suggestions} loading={aiLoading} />
+     <AISuggestion suggestions={suggestions} loading={aiLoading} />
     </div>
   );
 }
