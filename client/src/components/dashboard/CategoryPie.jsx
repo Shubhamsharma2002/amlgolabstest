@@ -1,33 +1,62 @@
 "use client";
 
-import {
-  PieChart,
-  Pie,
-  Cell,
-  ResponsiveContainer,
-} from "recharts";
+import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from "recharts";
 
-const data = [
-  { name: "Food", value: 400 },
-  { name: "Travel", value: 300 },
-  { name: "Shopping", value: 300 },
-  { name: "Other", value: 200 },
-];
+const COLORS = ["#6C63FF", "#00C49F", "#FFBB28", "#FF8042", "#AF19FF"];
 
-const COLORS = ["#6C63FF", "#00C49F", "#FFBB28", "#FF8042"];
+export default function CategoryPie({ data = [] }) {
+  const pieData = data.map(item => ({
+    name: item._id, 
+    value: item.total
+  }));
 
-export default function CategoryPie() {
+  if (!pieData.length) return <div className="p-10 text-center italic text-gray-400">No data available</div>;
+
   return (
     <div className="bg-white p-5 rounded-2xl shadow">
-      <h3 className="mb-4 font-semibold">Category Breakdown</h3>
-
-      <ResponsiveContainer width="100%" height={250}>
+      <h3 className="mb-4 font-semibold text-gray-700">Category Breakdown</h3>
+      <ResponsiveContainer width="100%" height={300}>
         <PieChart>
-          <Pie data={data} dataKey="value" outerRadius={80}>
-            {data.map((entry, index) => (
-              <Cell key={index} fill={COLORS[index]} />
+          <Pie 
+            data={pieData} 
+            dataKey="value" 
+            nameKey="name" 
+            cx="50%" 
+            cy="50%" 
+            innerRadius={0} 
+            outerRadius={80} // Radius thoda kam kiya taaki label ko jagah mile
+            stroke="white" 
+            strokeWidth={2}
+            
+            // 🔥 LABEL FIX: Value ko bahar aur bold dikhane ke liye
+            label={({ cx, cy, midAngle, innerRadius, outerRadius, value, index }) => {
+              const RADIAN = Math.PI / 180;
+              const radius = outerRadius + 25; // 25px bahar push kiya
+              const x = cx + radius * Math.cos(-midAngle * RADIAN);
+              const y = cy + radius * Math.sin(-midAngle * RADIAN);
+
+              return (
+                <text 
+                  x={x} 
+                  y={y} 
+                  fill={COLORS[index % COLORS.length]} // Same segment color
+                  textAnchor={x > cx ? 'start' : 'end'} 
+                  dominantBaseline="central"
+                  className="text-xs font-bold" // Tailwind class for bold
+                >
+                  ₹{value}
+                </text>
+              );
+            }}
+            labelLine={true} // Line on rakho taaki pata chale kis segment ki value hai
+          >
+            {pieData.map((entry, index) => (
+              <Cell key={index} fill={COLORS[index % COLORS.length]} />
             ))}
           </Pie>
+          <Tooltip 
+            contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}
+          />
         </PieChart>
       </ResponsiveContainer>
     </div>
