@@ -114,6 +114,7 @@ const loginUser = async (req, res, next) => {
             _id: user._id,
             email: user.email,
             fullname: user.fullname,
+            role: user.role,
           },
           accessToken,
         }, "Login successful")
