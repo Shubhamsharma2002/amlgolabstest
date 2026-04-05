@@ -3,11 +3,12 @@ import CategoryPie from "@/components/dashboard/CategoryPie";
 import SpendingChart from "@/components/dashboard/SpendingChart";
 import SummaryCard from "@/components/dashboard/SummaryCards";
 import AISuggestion from "@/components/ui/AISuggestion";
+import useAnalysis from "@/hooks/useAnalysis";
 import useDashboard from "@/hooks/useDashboard";
 
 export default function DashboardPage() {
   const { stats, loading } = useDashboard();
-
+  const { suggestions, loading: aiLoading } = useAnalysis();
   if (loading) return <div className="p-10 text-center font-bold text-purple-600">Wait, data is loading... 🚀</div>;
 
   return (
@@ -35,7 +36,7 @@ export default function DashboardPage() {
         <CategoryPie data={stats?.categoryStats} />
       </div>
 
-      <AISuggestion data={stats} />
+      <AISuggestion suggestions={suggestions} loading={aiLoading} />
     </div>
   );
 }

@@ -56,5 +56,34 @@ const signup = async (data) => {
   }
 };
 
-  return { login, signup, loading };
+const forgotPassword = async (data) => {
+    try {
+      setLoading(true);
+
+      // DHAYAN DO: Endpoint backend route se match hona chahiye
+      // Agar backend me router.route("/forgot-password") hai, toh yahi likho
+      await apiRequest("/auth/forgot-password", "POST", {
+        email: data.email,       // Frontend state se 'email' bhej rahe hain
+        newPassword: data.newPassword, // Frontend state se 'newPassword'
+      });
+
+      alert("Password updated successfully! Ab login karo. ✅");
+      
+      // Cleanup: Purana koi data ho toh hata do
+      if (typeof window !== "undefined") {
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
+      }
+
+      router.push("/login");
+    } catch (err) {
+      // Agar 'err.message' HTML hai, toh console me check karo
+      console.error("Auth Hook Error:", err);
+      alert(err.message || "Failed to reset password");
+    } finally {
+      setLoading(false);
+    }
+  };
+  return { login, signup, forgotPassword, loading };
+ 
 }

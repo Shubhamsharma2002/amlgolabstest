@@ -57,7 +57,7 @@ export default function LoginPage() {
         />
 
         <div className="text-right mb-4 text-sm text-blue-500 cursor-pointer">
-          Forgot Password?
+         <Link href='/forgot-password'>Forgot Password?</Link>
         </div>
 
         {/* 🔹 Button with loading */}

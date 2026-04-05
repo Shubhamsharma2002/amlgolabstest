@@ -35,10 +35,7 @@ export default function Sidebar() {
         ))}
       </div>
 
-      {/* Logout Bottom */}
-      <button className="mt-auto text-red-500 p-3 text-left hover:bg-red-100 rounded-lg">
-        Logout
-      </button>
+      
 
     </div>
   );
