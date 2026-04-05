@@ -6,10 +6,11 @@ import { SelectField } from "../ui/SelectField";
 
 const categoryOptions = [
   { label: "Food 🍔", value: "Food" },
-  { label: "Travel 🚗", value: "Travel" },
-  { label: "Shopping 🛍️", value: "Shopping" },
-  { label: "Rent 🏠", value: "Rent" },
-  { label: "Others 📦", value: "Others" },
+            { label: "Rent 🏠", value: "Rent" },
+            { label: "Shopping 🛍️", value: "Shopping" },
+            { label: "Travel 🛍️", value: "Travel" },
+            { label: "Bills 🛍️", value: "Bills" },
+             { label: "Others 🛍️", value: "Others" }
 ];
 
 export default function BudgetModal({ form, handleChange, onSave, onClose }) {

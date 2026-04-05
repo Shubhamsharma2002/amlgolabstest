@@ -12,11 +12,16 @@ export const apiRequest = async (endpoint, method, body) => {
     body: body ? JSON.stringify(body) : null,
   });
 
+  // 🔥 YAHAN FIX HAI: Pehle JSON extract karo
+  const data = await res.json(); 
+
   if (!res.ok) {
+    // Ab 'data' defined hai, toh ye error nahi dega
     throw new Error(data.message || "Something went wrong");
   }
 
-  return res.json();
+  // Seedha data return karo kyunki humne upar extract kar liya hai
+  return data; 
 };
 export const logoutApi = async () => {
   try {

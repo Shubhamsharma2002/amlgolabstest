@@ -1,275 +1,174 @@
 "use client";
 
-import { useState } from "react";
-import { SquarePen, Trash2 } from "lucide-react";
+import { useState, useEffect } from "react";
+import useExpense from "@/hooks/useExpenses"; // Hook import kiya
+import { ExpenseFilters } from "@/components/expenses/ExpenseFilters";
+import { ExpenseModal } from "@/components/expenses/ExpenseModal";
+import { ExpenseTable } from "@/components/expenses/ExpenseTable";
 
 export default function ExpensesPage() {
-  const [expenses, setExpenses] = useState([
-    {
-      id: 1,
-      amount: 500,
-      category: "Food",
-      date: "2026-04-01",
-      payment: "UPI",
-      notes: "Lunch",
-    },
-  ]);
+  // 1. 🚀 CUSTOM HOOK STATES
+  const { 
+    expenses, 
+    loading, 
+    fetchExpenses, 
+    addExpense, 
+    updateExpense, 
+    deleteExpense 
+  } = useExpense();
 
+  // 2. 🏠 UI STATES
   const [showModal, setShowModal] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const [editId, setEditId] = useState(null);
 
+  // 3. 📝 FORM STATE
   const [form, setForm] = useState({
     amount: "",
     category: "",
     date: "",
-    payment: "",
+    paymentMethod: "", // Backend key match ki
     notes: "",
   });
 
-  // 🔍 Search + Filters
+  // 4. 🔍 FILTER STATES
   const [search, setSearch] = useState("");
   const [filterCategory, setFilterCategory] = useState("");
   const [filterPayment, setFilterPayment] = useState("");
   const [filterDate, setFilterDate] = useState("");
 
-  // Handle input
+  // --- 📥 API CALLING LOGIC ---
+
+  // Jab bhi filters badle, backend se fresh data aaye
+  useEffect(() => {
+    fetchExpenses({ 
+      search, 
+      filterCategory, 
+      filterPayment, 
+      filterDate 
+    });
+  }, [search, filterCategory, filterPayment, filterDate, fetchExpenses]);
+
+  // --- 🕹️ HANDLERS ---
+
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  // Add + Edit
-  const handleSave = () => {
-    if (isEdit) {
-      const updated = expenses.map((item) =>
-        item.id === editId ? { ...item, ...form } : item
-      );
-      setExpenses(updated);
-      setIsEdit(false);
-      setEditId(null);
-    } else {
-      const newExpense = {
-        id: Date.now(),
-        ...form,
-      };
-      setExpenses([...expenses, newExpense]);
+  const handleSave = async () => {
+    // Validation
+    if (!form.amount || !form.category || !form.date || !form.paymentMethod) {
+      console.log("Missing fields in form:", form);
+      alert("Bhai, saari fields bharna zaroori hai! ❗");
+      
+      return;
     }
 
-    setShowModal(false);
-    setForm({ amount: "", category: "", date: "", payment: "", notes: "" });
+    let result;
+    if (isEdit) {
+      result = await updateExpense(editId, form);
+    } else {
+      result = await addExpense(form);
+    }
+
+    if (result.success) {
+      setShowModal(false);
+      setForm({ amount: "", category: "", date: "", paymentMethod: "", notes: "" });
+      fetchExpenses({ search, filterCategory, filterPayment, filterDate }); // Data refresh
+    } else {
+      alert(result.message || "Kuch gadbad ho gayi!");
+    }
   };
 
-  // Delete
-  const handleDelete = (id) => {
-    setExpenses(expenses.filter((item) => item.id !== id));
+  const handleDeleteExpense = async (id) => {
+    if (confirm("Kya sach mein delete karna hai?")) {
+      const result = await deleteExpense(id);
+      if (!result.success) alert("Delete nahi ho paya!");
+    }
   };
 
-  // Edit
-  const handleEdit = (id) => {
-    const selected = expenses.find((item) => item.id === id);
-    setForm(selected);
-    setEditId(id);
-    setIsEdit(true);
-    setShowModal(true);
-  };
+const handleEditClick = (id) => {
+  const selected = expenses.find((item) => item._id === id); 
+  
+  // 🔥 Safety Check: Agar 'selected' nahi mila toh function yahi rok do
+  if (!selected) {
+    console.error("Bhai, expense nahi mila ID se:", id);
+    return;
+  }
 
-  // 🔥 Filter + Search Logic
-  const filteredExpenses = expenses.filter((item) => {
-    const matchesSearch =
-      item.category.toLowerCase().includes(search.toLowerCase()) ||
-      item.payment.toLowerCase().includes(search.toLowerCase()) ||
-      item.notes?.toLowerCase().includes(search.toLowerCase());
-
-    const matchesCategory = filterCategory
-      ? item.category === filterCategory
-      : true;
-
-    const matchesPayment = filterPayment
-      ? item.payment === filterPayment
-      : true;
-
-    const matchesDate = filterDate ? item.date === filterDate : true;
-
-    return (
-      matchesSearch &&
-      matchesCategory &&
-      matchesPayment &&
-      matchesDate
-    );
+  setForm({
+    amount: selected.amount || "",
+    category: selected.category || "",
+    // Date fix: Agar date hai toh split karo, varna empty string
+    date: selected.date ? selected.date.split('T')[0] : "", 
+    paymentMethod: selected.paymentMethod || "",
+    notes: selected.notes || "",
   });
+  
+  setEditId(id);
+  setIsEdit(true);
+  setShowModal(true);
+};
 
   return (
-    <div className="space-y-6">
-      {/* 🔹 Header */}
+    <div className="p-2 space-y-6">
+      {/* HEADER SECTION */}
       <div className="flex justify-between items-center">
-        <h1 className="text-2xl font-bold">Expenses</h1>
-
-        <button
-          onClick={() => {
-            setShowModal(true);
-            setIsEdit(false);
-            setForm({
-              amount: "",
-              category: "",
-              date: "",
-              payment: "",
-              notes: "",
-            });
-          }}
-          className="bg-blue-500 text-white px-4 py-2 rounded-lg"
+        <div>
+          <h1 className="text-3xl font-black text-gray-900 tracking-tight uppercase">Expenses</h1>
+          <p className="text-gray-500 text-sm font-medium italic">Track every penny, Noida style! 💰</p>
+        </div>
+        <button 
+          onClick={() => { 
+            setShowModal(true); 
+            setIsEdit(false); 
+            setForm({ amount: "", category: "", date: "", paymentMethod: "", notes: "" });
+          }} 
+          className="bg-blue-600 text-white px-6 py-2.5 rounded-xl font-bold shadow-lg hover:bg-blue-700 transition-all active:scale-95"
         >
           + Add Expense
         </button>
       </div>
 
-      {/* 🔍 Search + Filters */}
-      <div className="flex flex-wrap gap-3 items-center">
-        <input
-          type="text"
-          placeholder="Search..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        className="px-4 py-2 rounded-xl bg-purple-500 text-white outline-none"
-        />
+      {/* FILTERS COMPONENT */}
+      <ExpenseFilters 
+        search={search} 
+        setSearch={setSearch}
+        setFilterCategory={setFilterCategory}
+        setFilterPayment={setFilterPayment}
+        setFilterDate={setFilterDate}
+      />
 
-        <select
-          onChange={(e) => setFilterCategory(e.target.value)}
-          className="px-4 py-2 rounded-xl bg-blue-500 text-white outline-none"
-        >
-          <option value="">All Categories</option>
-          <option value="Food">Food</option>
-          <option value="Rent">Rent</option>
-          <option value="Shopping">Shopping</option>
-        </select>
-
-        <select
-          onChange={(e) => setFilterPayment(e.target.value)}
-          className="px-4 py-2 rounded-xl bg-green-500 text-white outline-none"
-        >
-          <option value="">All Payments</option>
-          <option value="UPI">UPI</option>
-          <option value="Cash">Cash</option>
-          <option value="Card">Card</option>
-        </select>
-
-        <input
-          type="date"
-          onChange={(e) => setFilterDate(e.target.value)}
-          className="px-4 py-2 rounded-xl bg-gray-700 text-white outline-none"
-        />
-      </div>
-
-      {/* 🔹 Table */}
-      <div className="bg-white rounded-xl shadow overflow-hidden">
-        <table className="w-full text-left">
-          <thead className="bg-gray-100">
-            <tr>
-              <th className="p-3">Date</th>
-              <th>Category</th>
-              <th>Amount</th>
-              <th>Payment</th>
-              <th>Notes</th>
-              <th className="text-center">Action</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            {filteredExpenses.map((item) => (
-              <tr key={item.id} className="border-t">
-                <td className="p-3">{item.date}</td>
-                <td>{item.category}</td>
-                <td>₹{item.amount}</td>
-                <td>{item.payment}</td>
-                <td>{item.notes}</td>
-
-                <td className="text-center">
-                  <div className="flex justify-center gap-3">
-                    <button
-                      onClick={() => handleDelete(item.id)}
-                      className="text-red-500 hover:scale-110 transition"
-                    >
-                      <Trash2 size={20} />
-                    </button>
-
-                    <button
-                      onClick={() => handleEdit(item.id)}
-                      className="text-blue-500 hover:scale-110 transition"
-                    >
-                      <SquarePen size={20} />
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-
-      {/* 🔹 Modal */}
-      {showModal && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black/40 backdrop-blur-sm z-50">
-          <div className="bg-white p-6 rounded-xl w-96 shadow-lg">
-            <h2 className="text-lg font-bold mb-4">
-              {isEdit ? "Edit Expense" : "Add Expense"}
-            </h2>
-
-            <input
-              name="amount"
-              placeholder="Amount"
-              value={form.amount}
-              onChange={handleChange}
-              className="w-full border p-2 mb-3 rounded"
-            />
-
-            <input
-              name="category"
-              placeholder="Category"
-              value={form.category}
-              onChange={handleChange}
-              className="w-full border p-2 mb-3 rounded"
-            />
-
-            <input
-              type="date"
-              name="date"
-              value={form.date}
-              onChange={handleChange}
-              className="w-full border p-2 mb-3 rounded"
-            />
-
-            <input
-              name="payment"
-              placeholder="Payment Method"
-              value={form.payment}
-              onChange={handleChange}
-              className="w-full border p-2 mb-3 rounded"
-            />
-
-            <input
-              name="notes"
-              placeholder="Notes (optional)"
-              value={form.notes}
-              onChange={handleChange}
-              className="w-full border p-2 mb-3 rounded"
-            />
-
-            <div className="flex justify-end gap-3">
-              <button
-                onClick={() => setShowModal(false)}
-                className="px-3 py-1"
-              >
-                Cancel
-              </button>
-
-              <button
-                onClick={handleSave}
-                className="bg-blue-500 text-white px-3 py-1 rounded"
-              >
-                {isEdit ? "Update" : "Save"}
-              </button>
-            </div>
-          </div>
+      {/* TABLE COMPONENT */}
+      {loading ? (
+        <div className="flex flex-col items-center justify-center py-20">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mb-4"></div>
+          <p className="text-gray-500 font-bold italic">Bhai, data aa raha hai... tension mat lo!</p>
         </div>
+      ) : (
+        <ExpenseTable 
+          data={expenses} 
+          onDelete={handleDeleteExpense} 
+          onEdit={handleEditClick} 
+        />
+      )}
+
+      {/* NO DATA STATE */}
+      {!loading && expenses.length === 0 && (
+        <div className="text-center py-20 bg-white rounded-2xl border-2 border-dashed border-gray-100">
+           <p className="text-gray-400 font-medium">Bhai, list khali hai! Naya kharcha add karo ya filter check karo. 🔍</p>
+        </div>
+      )}
+
+      {/* MODAL COMPONENT */}
+      {showModal && (
+        <ExpenseModal 
+          isEdit={isEdit} 
+          form={form} 
+          onChange={handleChange} 
+          onSave={handleSave} 
+          onClose={() => setShowModal(false)} 
+        />
       )}
     </div>
   );
