@@ -1,4 +1,4 @@
 flask
 flask-cors
+pandas
 gunicorn
-pandas==2.2.2 --only-binary=:all:
