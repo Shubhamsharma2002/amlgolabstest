@@ -51,11 +51,34 @@ export const getDashboardData = async (req, res, next) => {
 
 export const getSmartSuggestions = async (req, res) => {
     try {
+        const userId = req.user._id;
+
+        // 1. Database se user ke real expenses nikalo
+        // Hum pichle 30-40 din ka data bhej sakte hain analysis ke liye
+        const userExpenses = await Expense.find({ owner: userId }).sort({ date: -1 });
+
+        // Agar koi kharcha nahi mila toh Python ko bhejne ki zaroorat hi nahi
+        if (!userExpenses || userExpenses.length === 0) {
+            return res.status(200).json({ 
+                success: true, 
+                suggestions: ["Bhai, pehle kuch kharche toh add karo tabhi toh suggest karunga!"] 
+            });
+        }
+
+        // 2. Real data Python API ko bhejo
         const response = await axios.post(process.env.PYTHON_API_URL, {
-            expenses: [] // Aapka data
+            expenses: userExpenses 
         });
+
+        // 3. Python se aaye suggestions frontend ko bhej do
         res.json(response.data);
+
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        console.error("AI Error:", error.message);
+        res.status(500).json({ 
+            success: false, 
+            error: "AI Coach offline hai", 
+            details: error.message 
+        });
     }
 };

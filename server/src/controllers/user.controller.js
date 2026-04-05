@@ -115,9 +115,72 @@ const logoutUser = async (req, res, next) => {
     next(error);
   }
 };
+// Password Reset Logic
+const forgotPasswordReset = async (req, res, next) => {
+  try {
+    const { email, newPassword } = req.body;
+
+    if (!email || !newPassword) {
+      throw new ApiError(400, "Email and New Password are required");
+    }
+
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      throw new ApiError(404, "User with this email does not exist");
+    }
+
+    // Naya password set karo
+    user.password = newPassword;
+    await user.save({ validateBeforeSave: false });
+
+    return res
+      .status(200)
+      .json(new ApiResponse(200, {}, "Password reset successfully. Now you can login!"));
+  } catch (error) {
+    next(error);
+  }
+};
+
+// Admin Feature: See all users' total spending 
+const getAdminDashboard = async (req, res, next) => {
+  try {
+    // Check if user is admin (Aapne User model me role: "admin" rakha hona chahiye) 
+    if (req.user.role !== "admin") {
+      throw new ApiError(403, "You do not have permission to view this data");
+    }
+
+    // Har user ka total spending nikalne ke liye aggregation
+    const usersSpending = await User.aggregate([
+      {
+        $lookup: {
+          from: "expenses", 
+          localField: "_id",
+          foreignField: "owner",
+          as: "expenses",
+        },
+      },
+      {
+        $project: {
+          fullname: 1,
+          email: 1,
+          totalSpent: { $sum: "$expenses.amount" },
+        },
+      },
+    ]);
+
+    return res
+      .status(200)
+      .json(new ApiResponse(200, usersSpending, "Admin data fetched successfully"));
+  } catch (error) {
+    next(error);
+  }
+};
 
 export {
   registerUser,
   loginUser,
   logoutUser,
+  forgotPasswordReset, 
+  getAdminDashboard 
 };
