@@ -20,7 +20,7 @@
   "scripts": {
     "dev": "nodemon src/index.js",
     "start": "node index.js",
-    "build": "npm install && npm rebuild sqlite3",
+    "build": "npm install && npm rebuild sqlite3 --build-from-source",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "shubham sharma",
