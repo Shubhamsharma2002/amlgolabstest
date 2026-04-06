@@ -1,4 +1,5 @@
-const BASE_URL = "http://localhost:5000/api/v1";
+const BASE_URL = process.env.URL;
+
 
 export const apiRequest = async (endpoint, method, body) => {
   const token = localStorage.getItem("token");
