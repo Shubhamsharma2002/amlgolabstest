@@ -1,22 +1,30 @@
-import mongoose from "mongoose";
+import { Sequelize } from 'sequelize';
 
-const connectDB = async () => {
+let sequelize;
+
+try {
+  sequelize = new Sequelize({
+    dialect: 'sqlite',
+    storage: './database.sqlite', // Ye file Render automatically create kar lega
+    logging: false,
+  });
+  console.log("✅ SQL Config Loaded");
+} catch (err) {
+  console.error("❌ SQL Config Error:", err.message);
+  sequelize = null; 
+}
+
+// Ye function index.js mein call ho raha hai, ise safe rakho
+export const connectSQL = async () => {
   try {
-    const uri = process.env.URI; // Ya process.env.MONGO_URI
-    if (!uri) {
-      throw new Error("MongoDB URI is missing in Environment Variables!");
+    if (sequelize) {
+      await sequelize.authenticate();
+      await sequelize.sync();
+      console.log('✅ SQLite Connected & Synced');
     }
-
-    console.log("Attempting to connect to MongoDB...");
-    
-    const connection = await mongoose.connect(uri);
-
-    console.log(`✅ MongoDB Connected: ${connection.connection.host}`);
   } catch (error) {
-    console.error("❌ MongoDB connection failed!");
-    console.error(`Error Details: ${error.message}`);
-    // Process exit mat karna varna Render baar-baar restart karega
+    console.error('⚠️ SQL Auth/Sync Failed:', error.message);
   }
 };
 
-export default connectDB;
+export default sequelize;
