@@ -34,7 +34,7 @@ The project is divided into three main micro-services:
 
 ## 🚀 Live Demo
 
-🔗 [View Live App](https://dashboard1-byshubham.vercel.app/)
+🔗 [View Live App](https://amlgolabstest.vercel.app/)
 
 ---
 ## 🛠️ Tech Stack
