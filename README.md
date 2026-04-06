@@ -48,7 +48,18 @@ The project is divided into three main micro-services:
 | **Services** | Python (Flask/FastAPI) |
 
 ---
+---
 
+## 🔐 Test Credentials (For Assessment)
+
+To explore the **Role-Based Access Control (RBAC)** features, please use the following accounts on the [Live App](https://amlgolabstest.vercel.app/):
+
+| Role | Email | Password | Features to Test |
+| :--- | :--- | :--- | :--- |
+| **Admin** | `admin@example.com` | `123456` | Platform Stats, User Management, SQL Sync |
+| **User** | `shivam@gmail.com` | `654321` | Expense Tracking, Budgeting, Charts |
+
+---
 ## 🚀 Getting Started
 
 ### 1. Backend Setup
